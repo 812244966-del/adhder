@@ -1,0 +1,9 @@
+export interface Thought {
+  id: string;
+  content: string;
+  createdAt: number;
+  status: 'active' | 'archived' | 'trash';
+  tags?: string[];
+}
+
+export type GroupedThoughts = Record<string, Thought[]>;
