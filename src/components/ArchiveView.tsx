@@ -24,7 +24,7 @@ export default function ArchiveView({ thoughts, onDelete }: ArchiveViewProps) {
   if (thoughts.length === 0) {
     return (
       <div className="text-center py-20 text-earth/40 font-serif italic">
-        Your long-term box is empty.
+        你的收集箱是空的。
       </div>
     );
   }
@@ -37,7 +37,7 @@ export default function ArchiveView({ thoughts, onDelete }: ArchiveViewProps) {
             <h2 className="font-display text-2xl text-earth">{month}</h2>
             <div className="flex-1 h-px bg-earth/10" />
             <span className="text-xs font-serif italic text-earth/40">
-              {grouped[month].length} thoughts
+              {grouped[month].length} 条思绪
             </span>
           </div>
           

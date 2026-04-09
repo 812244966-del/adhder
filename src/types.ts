@@ -7,3 +7,9 @@ export interface Thought {
 }
 
 export type GroupedThoughts = Record<string, Thought[]>;
+
+export interface DailyPlayback {
+  summary: string;
+  themes: string[];
+  date: string;
+}

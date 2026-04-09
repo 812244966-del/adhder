@@ -41,12 +41,12 @@ export default function SortStack({ thoughts, onAction, onComplete }: SortStackP
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] text-earth/40">
         <RotateCcw className="w-12 h-12 mb-4 opacity-20" />
-        <p className="font-serif italic">All thoughts sorted for now.</p>
+        <p className="font-serif italic">思绪已整理完毕。</p>
         <button 
           onClick={onComplete}
           className="mt-8 px-6 py-2 bg-sprout text-white rounded-full hover:bg-sprout/90 transition-colors"
         >
-          Back to Home
+          返回首页
         </button>
       </div>
     );
@@ -55,19 +55,25 @@ export default function SortStack({ thoughts, onAction, onComplete }: SortStackP
   return (
     <div className="relative w-full max-w-md mx-auto h-[600px] flex items-center justify-center perspective-1000">
       {/* Background cards for "layering" effect */}
-      {thoughts.slice(currentIndex + 1, currentIndex + 4).map((thought, i) => (
-        <div
-          key={thought.id}
-          className="absolute w-full"
-          style={{
-            zIndex: 10 - i,
-            transform: `translateY(${i * 10}px) scale(${1 - i * 0.05})`,
-            opacity: 0.3 / (i + 1),
-          }}
-        >
-          <ThoughtCard thought={thought} variant="compact" />
-        </div>
-      ))}
+      {thoughts.slice(currentIndex + 1, currentIndex + 4).map((thought, i) => {
+        const index = i + 1;
+        const rotation = index % 2 === 0 ? index * 2 : -index * 2;
+        const xOffset = index % 2 === 0 ? index * 4 : -index * 4;
+        
+        return (
+          <div
+            key={thought.id}
+            className="absolute w-full"
+            style={{
+              zIndex: 10 - index,
+              transform: `translateY(${index * 12}px) translateX(${xOffset}px) rotate(${rotation}deg) scale(${1 - index * 0.04})`,
+              opacity: 0.4 / (index),
+            }}
+          >
+            <ThoughtCard thought={thought} variant="compact" />
+          </div>
+        );
+      })}
 
       {/* Active card */}
       <AnimatePresence mode="wait">
@@ -87,7 +93,7 @@ export default function SortStack({ thoughts, onAction, onComplete }: SortStackP
             className="absolute top-1/2 -right-20 -translate-y-1/2 flex flex-col items-center text-sprout"
           >
             <Archive className="w-12 h-12" />
-            <span className="text-xs font-bold mt-2">ARCHIVE</span>
+            <span className="text-xs font-bold mt-2">归档</span>
           </motion.div>
           
           <motion.div 
@@ -95,7 +101,7 @@ export default function SortStack({ thoughts, onAction, onComplete }: SortStackP
             className="absolute top-1/2 -left-20 -translate-y-1/2 flex flex-col items-center text-petal"
           >
             <Trash2 className="w-12 h-12" />
-            <span className="text-xs font-bold mt-2">TRASH</span>
+            <span className="text-xs font-bold mt-2">删除</span>
           </motion.div>
         </motion.div>
       </AnimatePresence>
@@ -116,7 +122,7 @@ export default function SortStack({ thoughts, onAction, onComplete }: SortStackP
       </div>
       
       <div className="absolute -top-12 left-0 right-0 text-center text-earth/40 text-sm font-serif italic">
-        {currentIndex + 1} / {thoughts.length} thoughts to sort
+        还有 {thoughts.length - currentIndex} 条思绪待整理
       </div>
     </div>
   );

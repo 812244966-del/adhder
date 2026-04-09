@@ -38,8 +38,8 @@ export default function ThoughtInput({ onSave }: ThoughtInputProps) {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="What's on your mind? (Cmd+Enter to save)"
-          className="w-full min-h-[200px] p-8 bg-white/50 backdrop-blur-sm rounded-2xl border-2 border-earth/10 focus:border-sprout/50 focus:ring-0 transition-all font-display text-2xl resize-none placeholder:text-earth/20 text-ink shadow-inner"
+          placeholder="随意输入你的想法，代办……"
+          className="w-full min-h-[200px] p-8 bg-white/50 backdrop-blur-sm rounded-2xl border-2 border-earth/10 focus:border-sprout/50 outline-none focus:ring-0 transition-all font-display text-2xl resize-none placeholder:text-earth/20 text-ink shadow-inner"
         />
         
         <AnimatePresence>
@@ -58,7 +58,7 @@ export default function ThoughtInput({ onSave }: ThoughtInputProps) {
       </div>
       
       <div className="mt-4 text-center text-earth/40 text-sm font-serif italic">
-        "Capture it before it floats away..."
+        “在思绪飘走前抓住它……”
       </div>
     </div>
   );

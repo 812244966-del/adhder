@@ -14,13 +14,23 @@ interface ThoughtCardProps {
 const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, onArchive, onDelete, variant = 'default' }) => {
   const date = new Date(thought.createdAt);
   
+  // Use thought ID to pick a consistent illustration
+  const catDoodles = [
+    "https://api.iconify.design/ph:cat-thin.svg?color=%237d5a50",
+    "https://api.iconify.design/ph:cat-thin.svg?color=%237d5a50&flip=horizontal",
+    "https://api.iconify.design/line-md:cat.svg?color=%237d5a50",
+    "https://api.iconify.design/guidance:cat.svg?color=%237d5a50"
+  ];
+  const illustrationIndex = thought.id.charCodeAt(0) % catDoodles.length;
+  const illustrationUrl = catDoodles[illustrationIndex];
+
   return (
     <motion.div
       layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9 }}
-      className={`scrapbook-card rounded-lg overflow-hidden ${variant === 'compact' ? 'p-4' : 'p-8'}`}
+      className={`scrapbook-card rounded-lg overflow-hidden border-2 border-earth/10 ${variant === 'compact' ? 'p-4' : 'p-8'}`}
     >
       <div className="flex flex-col items-center text-center space-y-4">
         {/* Header like the screenshot */}
@@ -38,6 +48,16 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, onArchive, onDelete,
           </div>
         </div>
 
+        {/* Hand-drawn Illustration */}
+        <div className="w-20 h-20 opacity-30 grayscale hover:opacity-60 transition-all">
+          <img 
+            src={illustrationUrl} 
+            alt="Sketch" 
+            className="w-full h-full object-contain"
+            referrerPolicy="no-referrer"
+          />
+        </div>
+
         {/* Content */}
         <div className={`font-display text-ink leading-relaxed ${variant === 'compact' ? 'text-lg' : 'text-2xl'}`}>
           {thought.content}
@@ -45,7 +65,7 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, onArchive, onDelete,
 
         {/* Footer / Actions */}
         <div className="w-full pt-4 mt-4 border-t border-earth/10 flex justify-between items-center text-[10px] uppercase tracking-widest text-earth/40">
-          <span>TINY</span>
+          <span>灵感</span>
           <div className="flex gap-4">
             {onArchive && (
               <button 
@@ -64,7 +84,7 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, onArchive, onDelete,
               </button>
             )}
           </div>
-          <span>TYPE</span>
+          <span>类型</span>
         </div>
       </div>
       
