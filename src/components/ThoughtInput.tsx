@@ -2,6 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Send } from 'lucide-react';
 
+// Using a placeholder cat image for now. 
+// You can replace this with your uploaded image by saving it as src/assets/cat_input.png
+const catInputImage = "https://api.iconify.design/pepicons-pencil:cat.svg?color=%237d5a50&opacity=0.2";
+
 interface ThoughtInputProps {
   onSave: (content: string) => void;
 }
@@ -32,15 +36,24 @@ export default function ThoughtInput({ onSave }: ThoughtInputProps) {
 
   return (
     <div className="w-full max-w-2xl mx-auto px-4">
-      <div className="relative">
+      <div className="relative group">
         <textarea
           ref={textareaRef}
           value={content}
           onChange={(e) => setContent(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="随意输入你的想法，代办……"
-          className="w-full min-h-[200px] p-8 bg-white/50 backdrop-blur-sm rounded-2xl border-2 border-earth/10 focus:border-sprout/50 outline-none focus:ring-0 transition-all font-display text-2xl resize-none placeholder:text-earth/20 text-ink shadow-inner"
+          className="w-full min-h-[240px] p-8 bg-white/50 backdrop-blur-sm rounded-2xl border-2 border-earth/10 focus:border-sprout/50 outline-none focus:ring-0 transition-all font-display text-2xl resize-none placeholder:text-earth/20 text-ink shadow-inner relative z-10"
         />
+        
+        {/* Background Illustration */}
+        <div className="absolute bottom-4 right-4 w-32 h-32 pointer-events-none opacity-20 group-focus-within:opacity-40 transition-opacity z-0">
+          <img 
+            src={catInputImage} 
+            alt="" 
+            className="w-full h-full object-contain"
+          />
+        </div>
         
         <AnimatePresence>
           {content.trim() && (
