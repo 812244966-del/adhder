@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Send } from 'lucide-react';
-import catInputImage from '../assets/cat_input.png';
 
 interface ThoughtInputProps {
   onSave: (content: string) => void;
@@ -45,16 +44,23 @@ export default function ThoughtInput({ onSave }: ThoughtInputProps) {
         
         {/* Background Illustration - Always visible, fades when typing */}
         <div 
-          className={`absolute bottom-2 right-12 w-48 h-48 pointer-events-none z-20 transition-all duration-500 ${
-            content.trim() ? 'opacity-5 scale-95' : 'opacity-70 scale-100'
+          className={`absolute bottom-4 right-12 w-48 h-48 pointer-events-none z-20 transition-all duration-700 ${
+            content.trim() ? 'opacity-5 scale-90' : 'opacity-70 scale-100'
           }`}
           style={{ mixBlendMode: 'multiply' }}
         >
           <img 
-            src={catInputImage} 
+            src="/cat_input.png" 
             alt="" 
             className="w-full h-full object-contain"
-            style={{ filter: 'contrast(1.8) brightness(1.2) grayscale(1)' }}
+            style={{ 
+              filter: 'contrast(1.8) brightness(1.2) grayscale(1)' 
+            }}
+            onError={(e) => {
+              // Fallback if the image fails to load
+              (e.target as HTMLImageElement).style.display = 'none';
+              console.error("Cat image failed to load at /cat_input.png");
+            }}
           />
         </div>
         
