@@ -13,12 +13,19 @@ export const storage = {
     }
   },
   saveThoughts: (thoughts: Thought[]) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(thoughts));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(thoughts));
+    } catch (e) {
+      console.error("Failed to save thoughts to storage:", e);
+      if (e instanceof Error && e.name === 'QuotaExceededError') {
+        alert("存储空间已满，请清理一些旧的思绪。");
+      }
+    }
   },
   addThought: (content: string): Thought => {
     const thoughts = storage.getThoughts();
     const newThought: Thought = {
-      id: crypto.randomUUID(),
+      id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 15),
       content,
       createdAt: Date.now(),
       status: 'active',

@@ -25,12 +25,28 @@ export default function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
-    setThoughts(storage.getThoughts());
+    const loadThoughts = () => {
+      const loaded = storage.getThoughts();
+      setThoughts(loaded);
+    };
+
+    loadThoughts();
+
+    // Sync across tabs
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'mindsprout_thoughts') {
+        loadThoughts();
+      }
+    });
+
+    return () => {
+      window.removeEventListener('storage', loadThoughts);
+    };
   }, []);
 
   const handleSave = (content: string) => {
-    const newThought = storage.addThought(content);
-    setThoughts([newThought, ...thoughts]);
+    storage.addThought(content);
+    setThoughts(storage.getThoughts());
   };
 
   const handleAction = (id: string, status: 'archived' | 'trash') => {

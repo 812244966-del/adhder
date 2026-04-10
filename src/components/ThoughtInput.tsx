@@ -40,15 +40,21 @@ export default function ThoughtInput({ onSave }: ThoughtInputProps) {
           onChange={(e) => setContent(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="随意输入你的想法，代办……"
-          className="w-full min-h-[240px] p-8 bg-white/60 backdrop-blur-sm rounded-2xl border-2 border-earth/10 focus:border-sprout/50 outline-none focus:ring-0 transition-all font-display text-2xl resize-none placeholder:text-earth/20 text-ink shadow-inner relative z-10"
+          className="w-full min-h-[240px] p-8 bg-paper/40 backdrop-blur-sm rounded-2xl border-2 border-earth/10 focus:border-sprout/50 outline-none focus:ring-0 transition-all font-display text-2xl resize-none placeholder:text-earth/20 text-ink relative z-10"
         />
         
-        {/* Background Illustration - Using the uploaded cat image */}
-        <div className="absolute bottom-4 right-20 w-40 h-40 pointer-events-none z-0 opacity-30 group-focus-within:opacity-50 transition-all duration-500">
+        {/* Background Illustration - Always visible, fades when typing */}
+        <div 
+          className={`absolute bottom-2 right-12 w-48 h-48 pointer-events-none z-20 transition-all duration-500 ${
+            content.trim() ? 'opacity-5 scale-95' : 'opacity-70 scale-100'
+          }`}
+          style={{ mixBlendMode: 'multiply' }}
+        >
           <img 
             src={catInputImage} 
             alt="" 
             className="w-full h-full object-contain"
+            style={{ filter: 'contrast(1.8) brightness(1.2) grayscale(1)' }}
           />
         </div>
         
