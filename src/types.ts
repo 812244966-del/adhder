@@ -1,3 +1,10 @@
+export interface User {
+  id: string;
+  name: string;
+  avatar?: string;
+  createdAt: number;
+}
+
 export interface Thought {
   id: string;
   content: string;

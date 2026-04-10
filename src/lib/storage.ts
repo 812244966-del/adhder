@@ -4,8 +4,13 @@ const STORAGE_KEY = 'mindsprout_thoughts';
 
 export const storage = {
   getThoughts: (): Thought[] => {
-    const data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
+    try {
+      const data = localStorage.getItem(STORAGE_KEY);
+      return data ? JSON.parse(data) : [];
+    } catch (e) {
+      console.error("Failed to parse thoughts from storage:", e);
+      return [];
+    }
   },
   saveThoughts: (thoughts: Thought[]) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(thoughts));

@@ -24,8 +24,8 @@
 }
 
 .scrapbook-card {
-  @apply relative bg-white p-6 shadow-md border border-black/5;
-  background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+  @apply relative bg-[#FFFDF5] p-6 shadow-md border border-earth/10;
+  background-image: radial-gradient(#7D5A5015 1px, transparent 1px);
   background-size: 20px 20px;
 }
 

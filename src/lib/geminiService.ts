@@ -1,10 +1,32 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Thought, DailyPlayback } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+let aiInstance: GoogleGenAI | null = null;
+
+function getAI() {
+  if (!aiInstance) {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      console.warn("GEMINI_API_KEY is missing. AI features will be disabled.");
+      return null;
+    }
+    aiInstance = new GoogleGenAI({ apiKey });
+  }
+  return aiInstance;
+}
 
 export const geminiService = {
   generateDailyPlayback: async (thoughts: Thought[]): Promise<DailyPlayback> => {
+    const ai = getAI();
+    
+    if (!ai) {
+      return {
+        summary: "AI features are currently unavailable. Please check your API key configuration.",
+        themes: ["Configuration Required"],
+        date: new Date().toISOString(),
+      };
+    }
+
     if (thoughts.length === 0) {
       return {
         summary: "No thoughts captured today. Every day is a fresh start!",

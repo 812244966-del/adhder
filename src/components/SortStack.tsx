@@ -86,25 +86,37 @@ export default function SortStack({ thoughts, onAction, onComplete }: SortStackP
           className="absolute w-full cursor-grab active:cursor-grabbing"
         >
           <ThoughtCard thought={currentThought} />
-          
-          {/* Swipe Indicators */}
-          <motion.div 
-            style={{ opacity: archiveOpacity }}
-            className="absolute top-1/2 -right-20 -translate-y-1/2 flex flex-col items-center text-sprout"
-          >
-            <Archive className="w-12 h-12" />
-            <span className="text-xs font-bold mt-2">归档</span>
-          </motion.div>
-          
-          <motion.div 
-            style={{ opacity: trashOpacity }}
-            className="absolute top-1/2 -left-20 -translate-y-1/2 flex flex-col items-center text-petal"
-          >
-            <Trash2 className="w-12 h-12" />
-            <span className="text-xs font-bold mt-2">删除</span>
-          </motion.div>
         </motion.div>
       </AnimatePresence>
+
+      {/* Screen-side Swipe Indicators */}
+      <div className="fixed inset-y-0 left-0 right-0 pointer-events-none z-50 flex justify-between items-center px-8">
+        <motion.div 
+          style={{ 
+            opacity: trashOpacity,
+            x: useTransform(x, [-150, 0], [0, -50])
+          }}
+          className="flex flex-col items-center gap-2"
+        >
+          <div className="w-16 h-16 bg-petal/10 backdrop-blur-md rounded-full flex items-center justify-center border-2 border-petal/30 shadow-lg">
+            <Trash2 className="w-8 h-8 text-petal" />
+          </div>
+          <span className="text-petal font-bold text-sm bg-white/80 px-3 py-1 rounded-full shadow-sm">删除</span>
+        </motion.div>
+
+        <motion.div 
+          style={{ 
+            opacity: archiveOpacity,
+            x: useTransform(x, [0, 150], [50, 0])
+          }}
+          className="flex flex-col items-center gap-2"
+        >
+          <div className="w-16 h-16 bg-sprout/10 backdrop-blur-md rounded-full flex items-center justify-center border-2 border-sprout/30 shadow-lg">
+            <Archive className="w-8 h-8 text-sprout" />
+          </div>
+          <span className="text-sprout font-bold text-sm bg-white/80 px-3 py-1 rounded-full shadow-sm">保存</span>
+        </motion.div>
+      </div>
 
       <div className="absolute -bottom-20 left-0 right-0 flex justify-center gap-12">
         <button 
