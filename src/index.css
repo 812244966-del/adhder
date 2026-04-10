@@ -6,7 +6,7 @@
   --font-serif: "Cormorant Garamond", serif;
   --font-display: "Libre Baskerville", serif;
 
-  --color-paper: #FFF9E6;
+  --color-paper: #FEF9E7;
   --color-ink: #3D3D3D;
   --color-sprout: #94A684;
   --color-earth: #7D5A50;
@@ -15,7 +15,7 @@
 
 @layer base {
   body {
-    @apply bg-[#FFF9E6] text-ink font-sans antialiased;
+    @apply bg-[#FEF9E7] text-ink font-sans antialiased;
   }
 }
 

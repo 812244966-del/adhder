@@ -14,16 +14,6 @@ interface ThoughtCardProps {
 const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, onArchive, onDelete, variant = 'default' }) => {
   const date = new Date(thought.createdAt);
   
-  // Use thought ID to pick a consistent illustration
-  const catDoodles = [
-    "https://api.iconify.design/ph:cat-thin.svg?color=%237d5a50",
-    "https://api.iconify.design/ph:cat-thin.svg?color=%237d5a50&flip=horizontal",
-    "https://api.iconify.design/line-md:cat.svg?color=%237d5a50",
-    "https://api.iconify.design/guidance:cat.svg?color=%237d5a50"
-  ];
-  const illustrationIndex = thought.id.charCodeAt(0) % catDoodles.length;
-  const illustrationUrl = catDoodles[illustrationIndex];
-
   return (
     <motion.div
       layout
@@ -46,16 +36,6 @@ const ThoughtCard: React.FC<ThoughtCardProps> = ({ thought, onArchive, onDelete,
           <div className="font-serif text-earth/60 text-xs italic">
             {format(date, 'eee.')}
           </div>
-        </div>
-
-        {/* Hand-drawn Illustration */}
-        <div className="w-20 h-20 opacity-30 grayscale hover:opacity-60 transition-all">
-          <img 
-            src={illustrationUrl} 
-            alt="Sketch" 
-            className="w-full h-full object-contain"
-            referrerPolicy="no-referrer"
-          />
         </div>
 
         {/* Content */}
