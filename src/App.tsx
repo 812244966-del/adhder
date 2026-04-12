@@ -102,10 +102,10 @@ export default function App() {
         className="fixed top-0 left-0 h-full w-72 bg-white shadow-2xl z-50 p-8 flex flex-col"
       >
         <div className="flex items-center gap-3 mb-12">
-          <div className="w-10 h-10 bg-sprout rounded-xl flex items-center justify-center text-white font-display text-2xl shadow-sm">
-            M
+          <div className="w-10 h-10 bg-sprout rounded-xl flex items-center justify-center text-white shadow-sm">
+            <Sparkles className="w-6 h-6" />
           </div>
-          <h1 className="font-display text-2xl tracking-tight text-earth">MindSprout</h1>
+          <h1 className="font-display text-2xl tracking-tight text-earth">Spark</h1>
         </div>
 
         <nav className="flex-1 space-y-2">
@@ -301,7 +301,7 @@ export default function App() {
 
       {/* Footer Decoration */}
       <footer className="p-8 text-center text-earth/20 font-serif text-sm italic">
-        灵感萌芽 — 呵护你闪烁的智慧
+        灵感星火 — 呵护你闪烁的智慧
       </footer>
     </div>
   );

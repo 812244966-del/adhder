@@ -11,6 +11,13 @@
   --color-sprout: #94A684;
   --color-earth: #7D5A50;
   --color-petal: #E5989B;
+  --perspective: 1000px;
+}
+
+@layer utilities {
+  .perspective-1000 {
+    perspective: var(--perspective);
+  }
 }
 
 @layer base {
