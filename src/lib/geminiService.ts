@@ -21,16 +21,16 @@ export const geminiService = {
     
     if (!ai) {
       return {
-        summary: "AI features are currently unavailable. Please check your API key configuration.",
-        themes: ["Configuration Required"],
+        summary: "AI 功能目前不可用。请检查您的 API 密钥配置。",
+        themes: ["需要配置"],
         date: new Date().toISOString(),
       };
     }
 
     if (thoughts.length === 0) {
       return {
-        summary: "No thoughts captured today. Every day is a fresh start!",
-        themes: ["Quiet Day"],
+        summary: "今天还没有记录任何思绪。每一天都是一个新的开始！",
+        themes: ["宁静的一天"],
         date: new Date().toISOString(),
       };
     }
@@ -38,11 +38,13 @@ export const geminiService = {
     const thoughtsText = thoughts.map(t => `- ${t.content}`).join('\n');
     
     const prompt = `
-      Analyze the following thoughts captured by a user today. 
-      The user has ADHD, so the thoughts might be fragmented or diverse.
-      Provide a gentle, supportive summary of their day and identify 3-5 high-frequency themes or recurring topics.
+      分析用户今天记录的以下思绪。
+      用户患有 ADHD，因此思绪可能是碎片化或多样化的。
+      请对他们的一天提供一个温和、支持性的总结，并识别出 3-5 个高频主题或重复出现的话题。
       
-      Thoughts:
+      请务必使用中文（简体）进行回复。
+
+      思绪内容：
       ${thoughtsText}
     `;
 
@@ -72,15 +74,15 @@ export const geminiService = {
 
       const result = JSON.parse(response.text || "{}");
       return {
-        summary: result.summary || "Could not generate summary.",
+        summary: result.summary || "无法生成总结。",
         themes: result.themes || [],
         date: new Date().toISOString(),
       };
     } catch (error) {
       console.error("Gemini API Error:", error);
       return {
-        summary: "The stars are a bit cloudy today. I couldn't summarize your thoughts.",
-        themes: ["Connection Error"],
+        summary: "今天的星空有点模糊，我无法总结您的思绪。",
+        themes: ["连接错误"],
         date: new Date().toISOString(),
       };
     }

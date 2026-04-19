@@ -80,7 +80,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen paper-texture flex flex-col relative overflow-x-hidden">
+    <div className="min-h-[100dvh] ai-gradient-bg flex flex-col relative overflow-x-hidden text-ink">
       {/* Sidebar Overlay */}
       <AnimatePresence>
         {isSidebarOpen && (
@@ -99,13 +99,13 @@ export default function App() {
         initial={{ x: '-100%' }}
         animate={{ x: isSidebarOpen ? 0 : '-100%' }}
         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className="fixed top-0 left-0 h-full w-72 bg-white shadow-2xl z-50 p-8 flex flex-col"
+        className="fixed top-0 left-0 h-full w-72 bg-white shadow-2xl z-50 p-8 flex flex-col border-r border-black/5"
       >
         <div className="flex items-center gap-3 mb-12">
-          <div className="w-10 h-10 bg-sprout rounded-xl flex items-center justify-center text-white shadow-sm">
+          <div className="w-10 h-10 bg-sprout rounded-xl flex items-center justify-center text-white shadow-lg shadow-sprout/20">
             <Sparkles className="w-6 h-6" />
           </div>
-          <h1 className="font-display text-2xl tracking-tight text-earth">Spark</h1>
+          <h1 className="font-display text-2xl tracking-tight text-ink">SPARKS</h1>
         </div>
 
         <nav className="flex-1 space-y-2">
@@ -145,8 +145,8 @@ export default function App() {
         <div className="flex items-center gap-4">
           {view === 'sort' ? (
             <button 
-              onClick={() => setView('input')}
-              className="p-3 bg-white/80 backdrop-blur-sm rounded-2xl border border-earth/10 text-earth hover:bg-white transition-all shadow-sm active:scale-95 flex items-center gap-2"
+              onClick={() => navigateTo('input')}
+              className="p-3 bg-white/60 backdrop-blur-md rounded-2xl border border-black/5 text-ink hover:bg-white/80 transition-all shadow-sm active:scale-95 flex items-center gap-2"
             >
               <Plus className="w-6 h-6 rotate-45" />
               <span className="font-medium">返回</span>
@@ -154,7 +154,7 @@ export default function App() {
           ) : (
             <button 
               onClick={() => setIsSidebarOpen(true)}
-              className="p-3 bg-white/80 backdrop-blur-sm rounded-2xl border border-earth/10 text-earth hover:bg-white transition-all shadow-sm active:scale-95"
+              className="p-3 bg-white/60 backdrop-blur-md rounded-2xl border border-black/5 text-ink hover:bg-white/80 transition-all shadow-sm active:scale-95"
             >
               <Menu className="w-6 h-6" />
             </button>
@@ -165,7 +165,7 @@ export default function App() {
           {view !== 'input' && view !== 'sort' && (
             <button 
               onClick={() => setView('input')}
-              className="px-4 py-2 text-earth/60 font-serif italic hover:text-earth transition-colors text-sm"
+              className="px-4 py-2 text-ink/40 font-serif italic hover:text-ink transition-colors text-sm"
             >
               返回灵感
             </button>
@@ -173,16 +173,16 @@ export default function App() {
           {view !== 'sort' && (
             <button 
               onClick={() => setView('sort')}
-              className={`flex items-center gap-2 px-4 py-2.5 md:px-6 rounded-full transition-all shadow-sm font-medium ${
+              className={`flex items-center gap-2 px-4 py-2.5 md:px-6 rounded-full transition-all shadow-xl font-medium border border-black/5 ${
                 view === 'sort' 
-                  ? 'bg-earth text-white' 
-                  : 'bg-white/80 backdrop-blur-sm text-earth border border-earth/10 hover:bg-white'
+                  ? 'bg-sprout text-white shadow-sprout/20' 
+                  : 'bg-white/60 backdrop-blur-md text-ink hover:bg-white/80'
               }`}
             >
               <Layers className="w-5 h-5" />
-              <span className="hidden xs:inline">整理</span>
+              <span>整理</span>
               {activeThoughts.length > 0 && (
-                <span className="bg-petal text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center">
+                <span className="bg-petal text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-lg">
                   {activeThoughts.length}
                 </span>
               )}
@@ -204,22 +204,33 @@ export default function App() {
             >
               <ThoughtInput onSave={handleSave} />
               
-              {/* Recent thoughts preview */}
+              {/* Recent thoughts preview - Filtered to last 24 hours */}
               <div className="max-w-4xl mx-auto px-4">
                 <div className="flex items-center gap-4 mb-8">
-                  <h2 className="font-serif italic text-earth/60">最近捕捉</h2>
-                  <div className="flex-1 h-px bg-earth/10" />
+                  <h2 className="font-serif italic text-ink/40">今日捕捉的思绪</h2>
+                  <div className="flex-1 h-px bg-black/5" />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                  {activeThoughts.slice(0, 6).map(thought => (
-                    <ThoughtCard 
-                      key={thought.id} 
-                      thought={thought} 
-                      variant="compact"
-                      onArchive={(id) => handleAction(id, 'archived')}
-                      onDelete={(id) => handleAction(id, 'trash')}
-                    />
-                  ))}
+                  {activeThoughts
+                    .filter(t => {
+                      const age = Date.now() - new Date(t.createdAt).getTime();
+                      return age < 24 * 60 * 60 * 1000;
+                    })
+                    .slice(0, 6)
+                    .map(thought => (
+                      <ThoughtCard 
+                        key={thought.id} 
+                        thought={thought} 
+                        variant="compact"
+                        onArchive={(id) => handleAction(id, 'archived')}
+                        onDelete={(id) => handleAction(id, 'trash')}
+                      />
+                    ))}
+                  {activeThoughts.filter(t => (Date.now() - new Date(t.createdAt).getTime()) < 24 * 60 * 60 * 1000).length === 0 && (
+                    <div className="col-span-full py-12 text-center text-ink/20 font-serif italic">
+                      今天还没有新的思绪，去捕捉一点灵感吧。
+                    </div>
+                  )}
                 </div>
               </div>
             </motion.div>
@@ -300,8 +311,8 @@ export default function App() {
       </main>
 
       {/* Footer Decoration */}
-      <footer className="p-8 text-center text-earth/20 font-serif text-sm italic">
-        灵感星火 — 呵护你闪烁的智慧
+      <footer className="p-8 text-center text-ink/10 font-serif text-sm italic">
+        SPARKS.
       </footer>
     </div>
   );
@@ -318,8 +329,8 @@ function SidebarItem({ active, onClick, icon, label }: {
       onClick={onClick}
       className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
         active 
-          ? 'bg-earth text-white shadow-md' 
-          : 'text-earth/60 hover:bg-earth/5'
+          ? 'bg-sprout text-white shadow-lg shadow-sprout/20' 
+          : 'text-ink/60 hover:bg-black/5'
       }`}
     >
       {icon}

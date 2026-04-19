@@ -38,31 +38,9 @@ export default function ThoughtInput({ onSave }: ThoughtInputProps) {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="随意输入你的想法，代办……"
-          className="w-full min-h-[240px] p-8 bg-paper/40 backdrop-blur-sm rounded-2xl border-2 border-earth/10 focus:border-sprout/50 outline-none focus:ring-0 transition-all font-display text-2xl resize-none placeholder:text-earth/20 text-ink relative z-10"
+          placeholder="输入你的想法……"
+          className="w-full min-h-[240px] p-8 bg-white/60 backdrop-blur-md rounded-3xl border border-black/5 focus:border-sprout/50 outline-none focus:ring-0 transition-all font-display text-2xl resize-none placeholder:text-ink/10 text-ink relative z-10 shadow-xl"
         />
-        
-        {/* Background Illustration - Always visible, fades when typing */}
-        <div 
-          className={`absolute bottom-4 right-12 w-48 h-48 pointer-events-none z-20 transition-all duration-700 ${
-            content.trim() ? 'opacity-5 scale-90' : 'opacity-70 scale-100'
-          }`}
-          style={{ mixBlendMode: 'multiply' }}
-        >
-          <img 
-            src="/cat_input.png" 
-            alt="" 
-            className="w-full h-full object-contain"
-            style={{ 
-              filter: 'contrast(1.8) brightness(1.2) grayscale(1)' 
-            }}
-            onError={(e) => {
-              // Fallback if the image fails to load
-              (e.target as HTMLImageElement).style.display = 'none';
-              console.error("Cat image failed to load at /cat_input.png");
-            }}
-          />
-        </div>
         
         <AnimatePresence>
           {content.trim() && (
@@ -79,7 +57,7 @@ export default function ThoughtInput({ onSave }: ThoughtInputProps) {
         </AnimatePresence>
       </div>
       
-      <div className="mt-4 text-center text-earth/40 text-sm font-serif italic">
+      <div className="mt-4 text-center text-ink/20 text-sm font-serif italic">
         “在思绪飘走前抓住它……”
       </div>
     </div>

@@ -22,6 +22,10 @@ export default function SortStack({ thoughts, onAction, onComplete }: SortStackP
   const opacity = useTransform(x, [-200, -150, 0, 150, 200], [0, 1, 1, 1, 0]);
   const archiveOpacity = useTransform(x, [50, 150], [0, 1]);
   const trashOpacity = useTransform(x, [-150, -50], [1, 0]);
+  
+  // Define these at the top level, not inside JSX
+  const trashX = useTransform(x, [-150, 0], [0, -20]);
+  const archiveX = useTransform(x, [0, 150], [20, 0]);
 
   const handleDragEnd = (_: any, info: any) => {
     if (info.offset.x > 100) {
@@ -36,22 +40,28 @@ export default function SortStack({ thoughts, onAction, onComplete }: SortStackP
 
     const idToRemove = currentThought.id;
     setRemovedIds(prev => [...prev, idToRemove]);
-    onAction(idToRemove, action);
+    
+    // Use a small delay before updating parent state to allow local state to update first
+    // This prevents the component from re-rendering with an empty 'thoughts' prop
+    // before the 'removedIds' state has updated.
+    setTimeout(() => {
+      onAction(idToRemove, action);
+    }, 50);
 
     if (visibleThoughts.length <= 1) {
       // Delay onComplete slightly to allow exit animation
-      setTimeout(onComplete, 300);
+      setTimeout(onComplete, 400);
     }
   };
 
   if (!currentThought && removedIds.length >= thoughts.length) {
     return (
-      <div className="flex flex-col items-center justify-center h-[60vh] text-earth/40">
+      <div className="flex flex-col items-center justify-center h-[60vh] text-ink/20">
         <RotateCcw className="w-12 h-12 mb-4 opacity-20" />
-        <p className="font-serif italic">思绪已整理完毕。</p>
+        <p className="font-serif italic text-ink/40">思绪已整理完毕。</p>
         <button 
           onClick={onComplete}
-          className="mt-8 px-6 py-2 bg-sprout text-white rounded-full hover:bg-sprout/90 transition-colors"
+          className="mt-8 px-8 py-3 bg-sprout text-white rounded-full hover:bg-sprout/90 transition-all shadow-lg shadow-sprout/20 font-medium"
         >
           返回首页
         </button>
@@ -110,47 +120,47 @@ export default function SortStack({ thoughts, onAction, onComplete }: SortStackP
         <motion.div 
           style={{ 
             opacity: trashOpacity,
-            x: useTransform(x, [-150, 0], [0, -20])
+            x: trashX
           }}
           className="flex flex-col items-center gap-2"
         >
-          <div className="w-14 h-14 bg-petal/10 backdrop-blur-md rounded-full flex items-center justify-center border-2 border-petal/30 shadow-lg">
+          <div className="w-14 h-14 bg-petal/10 backdrop-blur-md rounded-full flex items-center justify-center border border-petal/10 shadow-lg shadow-petal/5">
             <Trash2 className="w-7 h-7 text-petal" />
           </div>
-          <span className="text-petal font-bold text-[10px] bg-white/90 px-2 py-0.5 rounded-full shadow-sm uppercase tracking-wider">删除</span>
+          <span className="text-petal font-bold text-[10px] bg-white/90 px-2 py-0.5 rounded-full shadow-sm uppercase tracking-wider border border-petal/10">删除</span>
         </motion.div>
 
         <motion.div 
           style={{ 
             opacity: archiveOpacity,
-            x: useTransform(x, [0, 150], [20, 0])
+            x: archiveX
           }}
           className="flex flex-col items-center gap-2"
         >
-          <div className="w-14 h-14 bg-sprout/10 backdrop-blur-md rounded-full flex items-center justify-center border-2 border-sprout/30 shadow-lg">
+          <div className="w-14 h-14 bg-sprout/10 backdrop-blur-md rounded-full flex items-center justify-center border border-sprout/10 shadow-lg shadow-sprout/5">
             <Archive className="w-7 h-7 text-sprout" />
           </div>
-          <span className="text-sprout font-bold text-[10px] bg-white/90 px-2 py-0.5 rounded-full shadow-sm uppercase tracking-wider">保存</span>
+          <span className="text-sprout font-bold text-[10px] bg-white/90 px-2 py-0.5 rounded-full shadow-sm uppercase tracking-wider border border-sprout/10">保存</span>
         </motion.div>
       </div>
 
       <div className="absolute -bottom-24 left-0 right-0 flex justify-center gap-12">
         <button 
           onClick={() => handleAction('trash')}
-          className="p-4 bg-white rounded-full shadow-lg text-petal hover:scale-110 active:scale-95 transition-all border border-earth/5"
+          className="p-4 bg-white rounded-full shadow-2xl text-petal hover:scale-110 active:scale-95 transition-all border border-black/5 active:bg-black/5"
         >
           <Trash2 className="w-6 h-6" />
         </button>
         <button 
           onClick={() => handleAction('archived')}
-          className="p-4 bg-white rounded-full shadow-lg text-sprout hover:scale-110 active:scale-95 transition-all border border-earth/5"
+          className="p-4 bg-white rounded-full shadow-2xl text-sprout hover:scale-110 active:scale-95 transition-all border border-black/5 active:bg-black/5"
         >
           <Archive className="w-6 h-6" />
         </button>
       </div>
       
       <div className="absolute -top-16 left-0 right-0 text-center">
-        <span className="bg-earth/5 px-4 py-1 rounded-full text-earth/40 text-xs font-serif italic">
+        <span className="bg-white/40 px-4 py-1 rounded-full text-ink/40 text-xs font-serif italic border border-black/5">
           还有 {visibleThoughts.length} 条思绪待整理
         </span>
       </div>
